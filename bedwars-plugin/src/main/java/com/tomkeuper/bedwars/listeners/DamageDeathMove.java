@@ -63,15 +63,15 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.tomkeuper.bedwars.BedWars.plugin;
 import static com.tomkeuper.bedwars.api.language.Language.getMsg;
 
 public class DamageDeathMove implements Listener {
+
+    private static final Map<UUID, Long> tntJumpTracker = new ConcurrentHashMap<>();
 
     private final double tntJumpStrengthReductionConstant;
     private final double tntJumpYAxisReductionConstant;
@@ -129,6 +129,15 @@ public class DamageDeathMove implements Listener {
                     e.setCancelled(true);
                     return;
                 }
+            }
+        }
+
+        if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            if (tntJumpTracker.containsKey(player.getUniqueId())) {
+                if (System.currentTimeMillis() - tntJumpTracker.get(player.getUniqueId()) < 10000) {
+                    e.setCancelled(true);
+                }
+                tntJumpTracker.remove(player.getUniqueId());
             }
         }
 
@@ -249,6 +258,8 @@ public class DamageDeathMove implements Listener {
             if (tntDamageSelf > -1) {
                 e.setDamage(tntDamageSelf);
             }
+
+            tntJumpTracker.put(p.getUniqueId(), System.currentTimeMillis());
 
             // Calculate and apply velocity (all your existing TNT velocity code)
             LivingEntity damaged = (LivingEntity) e.getEntity();
