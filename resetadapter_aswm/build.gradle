@@ -1,6 +1,6 @@
 dependencies {
     compileOnly project(':bedwars-api')
-    api 'com.flowpowered:flow-nbt:2.0.2'
+    api 'com.flowpowered:flow-nbt:1.0.0'
     compileOnly('org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT') {
         exclude group: 'commons-lang', module: 'commons-lang'
     }
@@ -17,5 +17,4 @@ repositories {
     mavenLocal()
     maven { url = uri('https://repo.codemc.io/repository/nms/') } // Spigot
     maven { url = uri('https://repo.papermc.io/repository/maven-public/') } // bungeecord-chat (dep of spigot-api)
-    maven { url = uri('https://repo.rapture.pw/repository/maven-snapshots/') } // slimeworldmanager-api
 }

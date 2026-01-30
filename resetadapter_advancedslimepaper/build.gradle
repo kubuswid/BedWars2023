@@ -1,6 +1,6 @@
 dependencies {
     compileOnly project(':bedwars-api')
-    api 'com.flowpowered:flow-nbt:2.0.2'
+    api 'com.flowpowered:flow-nbt:1.0.0'
     compileOnly('org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT') {
         exclude group: 'commons-lang', module: 'commons-lang'
     }

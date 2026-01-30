@@ -23,6 +23,7 @@ package com.tomkeuper.bedwars.arena.mapreset.slime;
 import com.flowpowered.nbt.CompoundMap;
 import com.flowpowered.nbt.CompoundTag;
 import com.flowpowered.nbt.IntTag;
+import com.flowpowered.nbt.Tag;
 import com.flowpowered.nbt.stream.NBTInputStream;
 import com.flowpowered.nbt.stream.NBTOutputStream;
 import com.infernalsuite.aswm.api.SlimePlugin;
@@ -438,12 +439,17 @@ public class SlimePaperAdapter extends RestoreAdapter {
         if (firstRegion.isPresent()) {
             try {
                 NBTInputStream inputStream = new NBTInputStream(new FileInputStream(firstRegion.get()));
-                Optional<CompoundTag> tag = inputStream.readTag().getAsCompoundTag();
+                Tag tagRaw = inputStream.readTag();
+                Optional<CompoundTag> tag = (tagRaw instanceof CompoundTag) ? Optional.of((CompoundTag) tagRaw) : Optional.empty();
                 inputStream.close();
 
                 if (tag.isPresent()) {
-                    Optional<CompoundTag> dataTag = tag.get().getAsCompoundTag("Chunk");
-                    Optional<Integer> version = dataTag.flatMap(tagMap -> tagMap.getIntValue("DataVersion"));
+                    Tag chunkTagRaw = tag.get().getValue().get("Chunk");
+                    Optional<CompoundTag> dataTag = (chunkTagRaw instanceof CompoundTag) ? Optional.of((CompoundTag) chunkTagRaw) : Optional.empty();
+                    Optional<Integer> version = dataTag.flatMap(tagMap -> {
+                        Tag dv = tagMap.getValue().get("DataVersion");
+                        return (dv instanceof IntTag) ? Optional.of(((IntTag) dv).getValue()) : Optional.empty();
+                    });
                     if (version.isPresent()) {
                         dataVersion = version;
                         Bukkit.getLogger().info(
