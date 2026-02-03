@@ -103,10 +103,6 @@ public class ShopIndex extends AbstractInventoryLayout implements IShopIndex {
             preResolveForArena(arena);
         }
 
-        if (!indexViewers.contains(player.getUniqueId())) {
-            indexViewers.add(player.getUniqueId());
-        }
-
         Inventory inv = Bukkit.createInventory(null, getInvSize(), Language.getMsg(player, getNamePath()));
 
         inv.setItem(getQuickBuyButton().getSlot(), getQuickBuyButton().getItemStack(player));
@@ -137,6 +133,9 @@ public class ShopIndex extends AbstractInventoryLayout implements IShopIndex {
 
         player.openInventory(inv);
 
+        if (!indexViewers.contains(player.getUniqueId())) {
+            indexViewers.add(player.getUniqueId());
+        }
     }
 
 
