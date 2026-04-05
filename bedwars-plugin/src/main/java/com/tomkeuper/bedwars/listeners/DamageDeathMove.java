@@ -728,7 +728,22 @@ public class DamageDeathMove implements Listener {
         if (Arena.isInArena(player)) {
             IArena a = Arena.getArenaByPlayer(player);
             if (a == null) return;
-            if (e.getFrom().getChunk() != e.getTo().getChunk()) {
+            Location from = e.getFrom();
+            Location to = e.getTo();
+
+            if (to == null) return;
+
+            if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
+                if (from.getYaw() != to.getYaw() || from.getPitch() != to.getPitch()) {
+                    if (a.getStatus() == GameState.playing) {
+                        Arena.afkCheck.remove(player.getUniqueId());
+                        BedWars.getAPI().getAFKUtil().setPlayerAFK(player, false);
+                    }
+                }
+                return;
+            }
+
+            if ((from.getBlockX() >> 4) != (to.getBlockX() >> 4) || (from.getBlockZ() >> 4) != (to.getBlockZ() >> 4)) {
                 /* update armor-stands hidden by nms */
                 // hide armor for those with invisibility potions
                 if (!a.getShowTime().isEmpty()) {
@@ -757,7 +772,7 @@ public class DamageDeathMove implements Listener {
             }
 
             if (a.isSpectator(player) || a.isReSpawning(player)) {
-                if (e.getTo().getY() < 0) {
+                if (to.getY() < 0) {
                     PaperSupport.teleportC(player, a.isSpectator(player) ? a.getSpectatorLocation() : a.getReSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
                     player.setAllowFlight(true);
                     player.setFlying(true);
@@ -765,15 +780,13 @@ public class DamageDeathMove implements Listener {
                 }
             } else {
                 if (a.getStatus() == GameState.playing) {
-                    if (player.getLocation().getBlockY() <= a.getYKillHeight()) {
+                    if (to.getBlockY() <= a.getYKillHeight()) {
                         BedWars.nms.voidKill(player);
                     }
-                    if (e.getFrom() != e.getTo()) {
-                        Arena.afkCheck.remove(player.getUniqueId());
-                        BedWars.getAPI().getAFKUtil().setPlayerAFK(player, false);
-                    }
+                    Arena.afkCheck.remove(player.getUniqueId());
+                    BedWars.getAPI().getAFKUtil().setPlayerAFK(player, false);
                 } else {
-                    if (player.getLocation().getBlockY() <= 0) {
+                    if (to.getBlockY() <= 0) {
                         ITeam bwt = a.getTeam(player);
                         if (bwt != null) PaperSupport.teleportC(player, bwt.getSpawn(), PlayerTeleportEvent.TeleportCause.PLUGIN);
                         else PaperSupport.teleportC(player, a.getSpectatorLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
@@ -782,7 +795,7 @@ public class DamageDeathMove implements Listener {
             }
         } else {
             if (BedWars.config.getBoolean(ConfigPath.LOBBY_VOID_TELEPORT_ENABLED) && player.getWorld().getName().equalsIgnoreCase(BedWars.config.getLobbyWorldName()) && BedWars.getServerType() == ServerType.MULTIARENA) {
-                if (e.getTo().getY() < BedWars.config.getInt(ConfigPath.LOBBY_VOID_TELEPORT_HEIGHT)) {
+                if (e.getTo() != null && e.getTo().getY() < BedWars.config.getInt(ConfigPath.LOBBY_VOID_TELEPORT_HEIGHT)) {
                     PaperSupport.teleportC(player, BedWars.config.getConfigLoc("lobbyLoc"), PlayerTeleportEvent.TeleportCause.PLUGIN);
                 }
             }
