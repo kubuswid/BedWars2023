@@ -103,11 +103,16 @@ public class InvisibilityPotionListener implements Listener {
         if (nms.getVersion() > 5) return; // check if higher than 1.12
 
         if (p.isSneaking()) return;
-        Material blockBelow = p.getLocation().clone().add(0, -1, 0).getBlock().getType();
-        if (blockBelow == Material.AIR) return;
+
         Location from = e.getFrom();
         Location to = e.getTo();
-        if (from.getBlock() != to.getBlock()) {
+
+        if (to == null) return;
+
+        if (from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ()) {
+            Material blockBelow = to.getWorld().getBlockAt(to.getBlockX(), to.getBlockY() - 1, to.getBlockZ()).getType();
+            if (blockBelow == Material.AIR) return;
+
             if (this.steps.get(p) == 6) {
                 p.getWorld().playEffect(p.getLocation().add(0.0D, 0.01D, 0.4D), Effect.FOOTSTEP, 1);
                 this.steps.put(p, steps.get(p) - 1);

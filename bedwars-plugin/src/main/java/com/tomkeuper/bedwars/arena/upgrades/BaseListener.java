@@ -50,6 +50,16 @@ public class BaseListener implements Listener {
         IArena a = Arena.getArenaByIdentifier(e.getPlayer().getWorld().getName());
         if (a == null) return;
         if (a.getStatus() != GameState.playing) return;
+
+        org.bukkit.Location from = e.getFrom();
+        org.bukkit.Location to = e.getTo();
+
+        if (to == null) return;
+
+        if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
+            return;
+        }
+
         Player p = e.getPlayer();
         checkEvents(p, a);
     }
@@ -84,8 +94,10 @@ public class BaseListener implements Listener {
 
         boolean notOnBase = true;
 
+        int radiusSq = arena.getIslandRadius() * arena.getIslandRadius();
+
         for (ITeam team : arena.getTeams()) {
-            if (player.getLocation().distance(team.getBed()) <= arena.getIslandRadius()) {
+            if (player.getLocation().distanceSquared(team.getBed()) <= radiusSq) {
                 notOnBase = false;
 
                 if (isOnABase.containsKey(player)) {
