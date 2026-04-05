@@ -445,7 +445,12 @@ public class BedWars extends JavaPlugin {
         }, 10L);
 
         /* Levels support */
-        setLevelAdapter(new InternalLevel());
+        if (Bukkit.getPluginManager().getPlugin("AlonsoLevels") != null) {
+            getLogger().info("Found AlonsoLevels! Hooking into AlonsoLevelsAPI...");
+            setLevelAdapter(new com.tomkeuper.bedwars.levels.alonso.AlonsoLevelsAdapter());
+        } else {
+            setLevelAdapter(new InternalLevel());
+        }
 
         /* Register tasks */
         Bukkit.getScheduler().runTaskTimer(this, new Refresh(), 20L, 20L);
