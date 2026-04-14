@@ -75,6 +75,15 @@ dependencies {
     slim 'com.saicone.rtag:rtag-block:1.5.13'
     slim 'com.saicone.rtag:rtag-entity:1.5.13'
     slim 'com.saicone.rtag:rtag-item:1.5.13'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+    testImplementation 'org.objenesis:objenesis:3.3'
+    testImplementation 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+    testImplementation 'com.github.NEZNAMY:TAB-API:5.0.7'
 }
 
 bukkit {
@@ -174,4 +183,8 @@ tasks.named('slimJar') {
 
 tasks.withType(JavaCompile).configureEach {
     options.release = 11
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
 }
