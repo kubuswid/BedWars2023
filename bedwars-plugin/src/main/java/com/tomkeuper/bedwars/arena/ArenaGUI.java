@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ArenaGUI {
 
@@ -50,8 +52,13 @@ public class ArenaGUI {
 
     private static final HashMap<UUID, Long> antiCalledTwice = new HashMap<>();
 
+    public static final Set<UUID> viewers = ConcurrentHashMap.newKeySet();
+
     public static void refreshInv(Player player, IArena arena, int players) {
         if (player == null || player.getOpenInventory() == null || !(player.getOpenInventory().getTopInventory().getHolder() instanceof ArenaSelectorHolder)) {
+            if (player != null) {
+                viewers.remove(player.getUniqueId());
+            }
             return;
         }
         ArenaSelectorHolder arenaSelectorHolder = ((ArenaSelectorHolder) player.getOpenInventory().getTopInventory().getHolder());
@@ -158,6 +165,7 @@ public class ArenaGUI {
         }
 
         player.openInventory(inventory);
+        viewers.add(player.getUniqueId());
         refreshInv(player, null, 0);
         Sounds.playSound("arena-selector-open", player);
     }
