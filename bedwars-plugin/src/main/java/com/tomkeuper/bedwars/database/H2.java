@@ -112,22 +112,6 @@ public class H2 implements IDatabase {
                 return true;
             }
             return false;
-//            BedWars.plugin.getLogger().info("Found '" + source + "' table. Starting migration...");
-//
-//            // Drop existing target if present (both name variants)
-//            try (Statement st = connection.createStatement()) {
-//                st.executeUpdate("DROP TABLE IF EXISTS quick_buy;");
-//                st.executeUpdate("DROP TABLE IF EXISTS QUICK_BUY;");
-//            }
-//
-//            // Rename the detected source to quick_buy (preserve case consistent with source if needed)
-//            String renameSql = "ALTER TABLE " + source + " RENAME TO " + (source.equals("QUICK_BUY_2") ? "QUICK_BUY" : "quick_buy") + ";";
-//            try (Statement st = connection.createStatement()) {
-//                st.executeUpdate(renameSql);
-//            }
-//
-//            BedWars.plugin.getLogger().info("Successfully renamed '" + source + "' to 'quick_buy'.");
-//            return true;
         } catch (SQLException e) {
             BedWars.plugin.getLogger().severe("Failed to migrate Quick Buy table: " + e.getMessage());
             e.printStackTrace();
