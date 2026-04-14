@@ -75,7 +75,7 @@ public class v1_8_R3 extends VersionSupport {
         try {
             setEggBridgeEffect("MOBSPAWNER_FLAMES");
         } catch (InvalidEffectException e) {
-            e.printStackTrace();
+            pl.getLogger().log(Level.SEVERE, "Could not set egg bridge effect", e);
         }
     }
 
@@ -373,7 +373,7 @@ public class v1_8_R3 extends VersionSupport {
             method.setAccessible(true);
             method.invoke(null, customClass, name, id);
         } catch (Exception e) {
-            e.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Could not register custom entity", e);
         }
     }
 
@@ -386,7 +386,7 @@ public class v1_8_R3 extends VersionSupport {
             sourceField.setAccessible(true);
             sourceField.set(nmsTNT, nmsEntityLiving);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Could not set TNT source", ex);
         }
     }
 
@@ -447,7 +447,7 @@ public class v1_8_R3 extends VersionSupport {
             field.set(Block.getByName("stained_glass"), glassBlast);
             field.set(Block.getByName("end_stone"), endStoneBlast);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Could not register TNT whitelist", e);
         }
     }
 
@@ -463,7 +463,7 @@ public class v1_8_R3 extends VersionSupport {
 
             return durabilityField.getFloat(nmsBlock);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Could not get blast resistance", e);
         }
 
         return 0; // Default if something fails
@@ -701,7 +701,7 @@ public class v1_8_R3 extends VersionSupport {
             profileField.setAccessible(true);
             profileField.set(headMeta, ((CraftPlayer) player).getProfile());
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e1) {
-            e1.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Could not set player profile on skull", e1);
         }
         head.setItemMeta(headMeta);
         return head;
