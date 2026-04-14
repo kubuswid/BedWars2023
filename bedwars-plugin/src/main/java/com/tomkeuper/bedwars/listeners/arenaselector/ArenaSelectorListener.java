@@ -36,6 +36,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class ArenaSelectorListener implements Listener {
@@ -97,5 +99,17 @@ public class ArenaSelectorListener implements Listener {
         }
 
         player.closeInventory();
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getInventory().getHolder() instanceof ArenaGUI.ArenaSelectorHolder) {
+            ArenaGUI.viewers.remove(event.getPlayer().getUniqueId());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        ArenaGUI.viewers.remove(event.getPlayer().getUniqueId());
     }
 }

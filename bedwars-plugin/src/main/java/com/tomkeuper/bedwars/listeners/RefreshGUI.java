@@ -31,14 +31,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.UUID;
+
 public class RefreshGUI implements Listener {
 
     @EventHandler
     public void onGameStateChange(GameStateChangeEvent e){
         if (e == null) return;
         int size = e.getArena().getPlayers().size();
-        for (Player p : Bukkit.getOnlinePlayers()){
-            ArenaGUI.refreshInv(p, e.getArena(), size);
+        for (UUID uuid : ArenaGUI.viewers) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) {
+                ArenaGUI.refreshInv(p, e.getArena(), size);
+            } else {
+                ArenaGUI.viewers.remove(uuid);
+            }
         }
     }
 
@@ -49,8 +56,13 @@ public class RefreshGUI implements Listener {
         if (!e.isSpectator()){
             size++;
         }
-        for (Player p : Bukkit.getOnlinePlayers()){
-            ArenaGUI.refreshInv(p, e.getArena(), size);
+        for (UUID uuid : ArenaGUI.viewers) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) {
+                ArenaGUI.refreshInv(p, e.getArena(), size);
+            } else {
+                ArenaGUI.viewers.remove(uuid);
+            }
         }
     }
 
@@ -61,23 +73,38 @@ public class RefreshGUI implements Listener {
         if (!e.isSpectator()){
             size--;
         }
-        for (Player p : Bukkit.getOnlinePlayers()){
-            ArenaGUI.refreshInv(p, e.getArena(), size);
+        for (UUID uuid : ArenaGUI.viewers) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) {
+                ArenaGUI.refreshInv(p, e.getArena(), size);
+            } else {
+                ArenaGUI.viewers.remove(uuid);
+            }
         }
     }
 
     @EventHandler
     public void onArenaEnable(ArenaEnableEvent e){
         if (e == null) return;
-        for (Player p : Bukkit.getOnlinePlayers()){
-            ArenaGUI.refreshInv(p, e.getArena(), 0);
+        for (UUID uuid : ArenaGUI.viewers) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) {
+                ArenaGUI.refreshInv(p, e.getArena(), 0);
+            } else {
+                ArenaGUI.viewers.remove(uuid);
+            }
         }
     }
 
     @EventHandler
     public void onArenaDisable(ArenaDisableEvent e){
-        for (Player p : Bukkit.getOnlinePlayers()){
-            ArenaGUI.refreshInv(p, null, 0);
+        for (UUID uuid : ArenaGUI.viewers) {
+            Player p = Bukkit.getPlayer(uuid);
+            if (p != null) {
+                ArenaGUI.refreshInv(p, null, 0);
+            } else {
+                ArenaGUI.viewers.remove(uuid);
+            }
         }
     }
 }
