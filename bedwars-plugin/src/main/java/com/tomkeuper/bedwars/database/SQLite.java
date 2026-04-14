@@ -344,8 +344,9 @@ public class SQLite implements IDatabase {
         try {
             checkConnection();
 
-            try (Statement statement = connection.createStatement()) {
-                try (ResultSet rs = statement.executeQuery("SELECT uuid FROM quick_buy WHERE uuid = '" + uuid.toString() + "';")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT uuid FROM quick_buy WHERE uuid = ?;")) {
+                statement.setString(1, uuid.toString());
+                try (ResultSet rs = statement.executeQuery()) {
                     if (rs.next()) {
                         rs.close();
                         return true;
@@ -424,12 +425,18 @@ public class SQLite implements IDatabase {
                             ps.executeUpdate();
                         }
                     } else {
-                        try (PreparedStatement ps = displayName == null ? connection.prepareStatement("UPDATE player_levels SET level=?, xp=? WHERE uuid = '" + player.toString() + "';") : connection.prepareStatement("UPDATE player_levels SET level=?, xp=?, name=?, next_cost=? WHERE uuid = '" + player.toString() + "';")) {
+                        String query = displayName == null
+                                ? "UPDATE player_levels SET level=?, xp=? WHERE uuid = ?;"
+                                : "UPDATE player_levels SET level=?, xp=?, name=?, next_cost=? WHERE uuid = ?;";
+                        try (PreparedStatement ps = connection.prepareStatement(query)) {
                             ps.setInt(1, level);
                             ps.setInt(2, xp);
                             if (displayName != null) {
                                 ps.setString(3, displayName);
                                 ps.setInt(4, nextCost);
+                                ps.setString(5, player.toString());
+                            } else {
+                                ps.setString(3, player.toString());
                             }
                             ps.executeUpdate();
                         }
@@ -446,11 +453,14 @@ public class SQLite implements IDatabase {
         try {
             checkConnection();
 
-            try (Statement statement = connection.createStatement()) {
-                try (ResultSet rs = statement.executeQuery("SELECT iso FROM player_language WHERE uuid = '" + player.toString() + "';")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT iso FROM player_language WHERE uuid = ?;")) {
+                statement.setString(1, player.toString());
+                try (ResultSet rs = statement.executeQuery()) {
                     if (rs.next()) {
-                        try (Statement st = connection.createStatement()) {
-                            st.executeUpdate("UPDATE player_language SET iso='" + iso + "' WHERE uuid = '" + player.toString() + "';");
+                        try (PreparedStatement st = connection.prepareStatement("UPDATE player_language SET iso=? WHERE uuid = ?;")) {
+                            st.setString(1, iso);
+                            st.setString(2, player.toString());
+                            st.executeUpdate();
                         }
                     } else {
                         try (PreparedStatement st = connection.prepareStatement("INSERT INTO player_language (uuid, iso) VALUES (?, ?);")) {

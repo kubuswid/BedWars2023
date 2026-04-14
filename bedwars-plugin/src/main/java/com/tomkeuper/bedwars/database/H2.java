@@ -322,8 +322,9 @@ public class H2 implements IDatabase {
         try {
             checkConnection();
 
-            try (Statement statement = connection.createStatement()) {
-                try (ResultSet rs = statement.executeQuery("SELECT UUID FROM QUICK_BUY WHERE UUID = '" + uuid.toString() + "';")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT UUID FROM QUICK_BUY WHERE UUID = ?;")) {
+                statement.setString(1, uuid.toString());
+                try (ResultSet rs = statement.executeQuery()) {
                     if (rs.next()) {
                         rs.close();
                         return true;
@@ -401,12 +402,18 @@ public class H2 implements IDatabase {
                             ps.executeUpdate();
                         }
                     } else {
-                        try (PreparedStatement ps = displayName == null ? connection.prepareStatement("UPDATE PLAYER_LEVELS SET LEVEL=?, XP=? WHERE UUID = '" + player.toString() + "';") : connection.prepareStatement("UPDATE PLAYER_LEVELS SET LEVEL=?, XP=?, NAME=?, NEXT_COST=? WHERE UUID = '" + player.toString() + "';")) {
+                        String query = displayName == null
+                                ? "UPDATE PLAYER_LEVELS SET LEVEL=?, XP=? WHERE UUID = ?;"
+                                : "UPDATE PLAYER_LEVELS SET LEVEL=?, XP=?, NAME=?, NEXT_COST=? WHERE UUID = ?;";
+                        try (PreparedStatement ps = connection.prepareStatement(query)) {
                             ps.setInt(1, level);
                             ps.setInt(2, xp);
                             if (displayName != null) {
                                 ps.setString(3, displayName);
                                 ps.setInt(4, nextCost);
+                                ps.setString(5, player.toString());
+                            } else {
+                                ps.setString(3, player.toString());
                             }
                             ps.executeUpdate();
                         }
@@ -423,11 +430,14 @@ public class H2 implements IDatabase {
         try {
             checkConnection();
 
-            try (Statement statement = connection.createStatement()) {
-                try (ResultSet rs = statement.executeQuery("SELECT iso FROM PLAYER_LANGUAGE WHERE UUID = '" + player.toString() + "';")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT iso FROM PLAYER_LANGUAGE WHERE UUID = ?;")) {
+                statement.setString(1, player.toString());
+                try (ResultSet rs = statement.executeQuery()) {
                     if (rs.next()) {
-                        try (Statement st = connection.createStatement()) {
-                            st.executeUpdate("UPDATE PLAYER_LANGUAGE SET iso='" + iso + "' WHERE UUID = '" + player.toString() + "';");
+                        try (PreparedStatement st = connection.prepareStatement("UPDATE PLAYER_LANGUAGE SET iso=? WHERE UUID = ?;")) {
+                            st.setString(1, iso);
+                            st.setString(2, player.toString());
+                            st.executeUpdate();
                         }
                     } else {
                         try (PreparedStatement st = connection.prepareStatement("INSERT INTO PLAYER_LANGUAGE (UUID, iso) VALUES (?, ?);")) {
