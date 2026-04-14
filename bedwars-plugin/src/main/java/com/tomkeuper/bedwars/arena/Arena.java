@@ -636,16 +636,15 @@ public class Arena implements IArena {
                 BedWars.nms.sendPlayerSpawnPackets(p, this);
                 //}
             }
-            for (Player on : Bukkit.getOnlinePlayers()) {
-                if (on == null) continue;
+            for (Player on : getPlayers()) {
                 if (on.equals(p)) continue;
-                if (isPlayer(on)) {
-                    BedWars.nms.spigotShowPlayer(p, on);
-                    BedWars.nms.spigotShowPlayer(on, p);
-                } else {
-                    BedWars.nms.spigotHidePlayer(p, on);
-                    BedWars.nms.spigotHidePlayer(on, p);
-                }
+                BedWars.nms.spigotShowPlayer(p, on);
+                BedWars.nms.spigotShowPlayer(on, p);
+            }
+            for (Player on : getSpectators()) {
+                if (on.equals(p)) continue;
+                BedWars.nms.spigotHidePlayer(p, on);
+                BedWars.nms.spigotHidePlayer(on, p);
             }
 
             if (getServerType() == ServerType.BUNGEE) {
@@ -743,18 +742,15 @@ public class Arena implements IArena {
 
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if (leaving.contains(p)) return;
-                for (Player on : Bukkit.getOnlinePlayers()) {
-                    if (on == p) continue;
-                    if (getSpectators().contains(on)) {
-                        BedWars.nms.spigotShowPlayer(p, on);
-                        BedWars.nms.spigotShowPlayer(on, p);
-                    } else if (getPlayers().contains(on)) {
-                        BedWars.nms.spigotHidePlayer(p, on);
-                        BedWars.nms.spigotShowPlayer(on, p);
-                    } else {
-                        BedWars.nms.spigotHidePlayer(p, on);
-                        BedWars.nms.spigotHidePlayer(on, p);
-                    }
+                for (Player on : getSpectators()) {
+                    if (on.equals(p)) continue;
+                    BedWars.nms.spigotShowPlayer(p, on);
+                    BedWars.nms.spigotShowPlayer(on, p);
+                }
+                for (Player on : getPlayers()) {
+                    if (on.equals(p)) continue;
+                    BedWars.nms.spigotHidePlayer(p, on);
+                    BedWars.nms.spigotShowPlayer(on, p);
                 }
 
 
