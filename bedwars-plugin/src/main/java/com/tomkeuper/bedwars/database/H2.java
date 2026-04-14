@@ -322,8 +322,9 @@ public class H2 implements IDatabase {
         try {
             checkConnection();
 
-            try (Statement statement = connection.createStatement()) {
-                try (ResultSet rs = statement.executeQuery("SELECT UUID FROM QUICK_BUY WHERE UUID = '" + uuid.toString() + "';")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT UUID FROM QUICK_BUY WHERE UUID = ?;")) {
+                statement.setString(1, uuid.toString());
+                try (ResultSet rs = statement.executeQuery()) {
                     if (rs.next()) {
                         rs.close();
                         return true;
@@ -423,11 +424,14 @@ public class H2 implements IDatabase {
         try {
             checkConnection();
 
-            try (Statement statement = connection.createStatement()) {
-                try (ResultSet rs = statement.executeQuery("SELECT iso FROM PLAYER_LANGUAGE WHERE UUID = '" + player.toString() + "';")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT iso FROM PLAYER_LANGUAGE WHERE UUID = ?;")) {
+                statement.setString(1, player.toString());
+                try (ResultSet rs = statement.executeQuery()) {
                     if (rs.next()) {
-                        try (Statement st = connection.createStatement()) {
-                            st.executeUpdate("UPDATE PLAYER_LANGUAGE SET iso='" + iso + "' WHERE UUID = '" + player.toString() + "';");
+                        try (PreparedStatement st = connection.prepareStatement("UPDATE PLAYER_LANGUAGE SET iso=? WHERE UUID = ?;")) {
+                            st.setString(1, iso);
+                            st.setString(2, player.toString());
+                            st.executeUpdate();
                         }
                     } else {
                         try (PreparedStatement st = connection.prepareStatement("INSERT INTO PLAYER_LANGUAGE (UUID, iso) VALUES (?, ?);")) {
