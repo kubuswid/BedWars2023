@@ -396,7 +396,7 @@ public final class v1_21_R3 extends VersionSupport {
 
             return durabilityField.getFloat(nmsBlock);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Failed to get blast resistance for block " + bukkitBlock.getType(), e);
         }
 
         return 0; // Default if something fails
