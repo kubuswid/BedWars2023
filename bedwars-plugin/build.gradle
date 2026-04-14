@@ -66,6 +66,7 @@ dependencies {
         exclude group: 'org.bukkit', module: 'bukkit'
     }
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    testImplementation 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.6'
     compileOnly 'com.github.NEZNAMY:TAB-API:5.0.7'
     compileOnly 'de.dytanic.cloudnet:cloudnet-wrapper-jvm:3.4.5-RELEASE'
@@ -75,6 +76,11 @@ dependencies {
     slim 'com.saicone.rtag:rtag-block:1.5.13'
     slim 'com.saicone.rtag:rtag-entity:1.5.13'
     slim 'com.saicone.rtag:rtag-item:1.5.13'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.10.2'
+    testImplementation 'org.mockito:mockito-core:5.10.0'
 }
 
 bukkit {
@@ -174,4 +180,8 @@ tasks.named('slimJar') {
 
 tasks.withType(JavaCompile).configureEach {
     options.release = 11
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
