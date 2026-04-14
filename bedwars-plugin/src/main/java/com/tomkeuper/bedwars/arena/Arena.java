@@ -636,16 +636,14 @@ public class Arena implements IArena {
                 BedWars.nms.sendPlayerSpawnPackets(p, this);
                 //}
             }
-            for (Player on : Bukkit.getOnlinePlayers()) {
-                if (on == null) continue;
+            for (Player on : getPlayers()) {
                 if (on.equals(p)) continue;
-                if (isPlayer(on)) {
-                    BedWars.nms.spigotShowPlayer(p, on);
-                    BedWars.nms.spigotShowPlayer(on, p);
-                } else {
-                    BedWars.nms.spigotHidePlayer(p, on);
-                    BedWars.nms.spigotHidePlayer(on, p);
-                }
+                BedWars.nms.spigotShowPlayer(p, on);
+                BedWars.nms.spigotShowPlayer(on, p);
+            }
+            for (Player on : getSpectators()) {
+                BedWars.nms.spigotHidePlayer(p, on);
+                BedWars.nms.spigotHidePlayer(on, p);
             }
 
             if (getServerType() == ServerType.BUNGEE) {
@@ -743,18 +741,14 @@ public class Arena implements IArena {
 
             Bukkit.getScheduler().runTask(plugin, () -> {
                 if (leaving.contains(p)) return;
-                for (Player on : Bukkit.getOnlinePlayers()) {
+                for (Player on : getSpectators()) {
                     if (on == p) continue;
-                    if (getSpectators().contains(on)) {
-                        BedWars.nms.spigotShowPlayer(p, on);
-                        BedWars.nms.spigotShowPlayer(on, p);
-                    } else if (getPlayers().contains(on)) {
-                        BedWars.nms.spigotHidePlayer(p, on);
-                        BedWars.nms.spigotShowPlayer(on, p);
-                    } else {
-                        BedWars.nms.spigotHidePlayer(p, on);
-                        BedWars.nms.spigotHidePlayer(on, p);
-                    }
+                    BedWars.nms.spigotShowPlayer(p, on);
+                    BedWars.nms.spigotShowPlayer(on, p);
+                }
+                for (Player on : getPlayers()) {
+                    BedWars.nms.spigotHidePlayer(p, on);
+                    BedWars.nms.spigotShowPlayer(on, p);
                 }
 
 
@@ -1014,15 +1008,14 @@ public class Arena implements IArena {
 
         if (!BedWars.isShuttingDown()) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                for (Player on : Bukkit.getOnlinePlayers()) {
+                for (Player on : getPlayers()) {
                     if (on.equals(p)) continue;
-                    if (getArenaByPlayer(on) == null) {
-                        BedWars.nms.spigotShowPlayer(p, on);
-                        BedWars.nms.spigotShowPlayer(on, p);
-                    } else {
-                        BedWars.nms.spigotHidePlayer(p, on);
-                        BedWars.nms.spigotHidePlayer(on, p);
-                    }
+                    BedWars.nms.spigotHidePlayer(p, on);
+                    BedWars.nms.spigotHidePlayer(on, p);
+                }
+                for (Player on : getSpectators()) {
+                    BedWars.nms.spigotHidePlayer(p, on);
+                    BedWars.nms.spigotHidePlayer(on, p);
                 }
                 if (!disconnect) BoardManager.getInstance().giveTabFeatures(p, null, false);
             }, 5L);
@@ -1158,15 +1151,15 @@ public class Arena implements IArena {
 
         if (!BedWars.isShuttingDown()) {
             Bukkit.getScheduler().runTask(plugin, () -> {
-                for (Player on : Bukkit.getOnlinePlayers()) {
+                for (Player on : getPlayers()) {
                     if (on.equals(p)) continue;
-                    if (getArenaByPlayer(on) == null) {
-                        BedWars.nms.spigotShowPlayer(p, on);
-                        BedWars.nms.spigotShowPlayer(on, p);
-                    } else {
-                        BedWars.nms.spigotHidePlayer(p, on);
-                        BedWars.nms.spigotHidePlayer(on, p);
-                    }
+                    BedWars.nms.spigotHidePlayer(p, on);
+                    BedWars.nms.spigotHidePlayer(on, p);
+                }
+                for (Player on : getSpectators()) {
+                    if (on.equals(p)) continue;
+                    BedWars.nms.spigotHidePlayer(p, on);
+                    BedWars.nms.spigotHidePlayer(on, p);
                 }
                 if (!disconnect) BoardManager.getInstance().giveTabFeatures(p, null, false);
             });
@@ -1222,13 +1215,14 @@ public class Arena implements IArena {
         Bukkit.getPluginManager().callEvent(ev);
         if (ev.isCancelled()) return false;
 
-        for (Player on : Bukkit.getOnlinePlayers()) {
-            if (on.equals(p)) continue;
-            if (!isInArena(on)) {
-                BedWars.nms.spigotHidePlayer(on, p);
-                BedWars.nms.spigotHidePlayer(p, on);
-            }
-        }
+        // Rejoin logic previously iterated over all online players to hide the joining player
+        // from those not in the arena. Since joining a server/world or proxy already manages
+        // standard visibility, we only need to assure the player is visible to the arena
+        // and hide them from others only if required by a multi-arena design where
+        // players in the same world shouldn't see each other (handled by JoinListener).
+        // It's safer for performance to rely on the general visibility updates.
+        // The player is re-adding to `players` list below and visibility updates usually
+        // rely on players in the same arena.
 
         p.closeInventory();
         players.add(p);
