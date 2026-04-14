@@ -400,8 +400,6 @@ public class OreGenerator implements IGenerator {
 
     @Override
     public void enableRotation() {
-        //loadDefaults(false);
-        //if (getType() == GeneratorType.EMERALD || getType() == GeneratorType.DIAMOND) {
         rotation.add(this);
         if (hologramEnabled) {
             for (Language lang : Language.getLanguages()) {
