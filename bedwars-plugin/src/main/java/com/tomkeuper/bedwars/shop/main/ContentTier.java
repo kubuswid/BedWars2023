@@ -129,7 +129,9 @@ public class ContentTier implements IContentTier {
         boolean inherit = false;
         try {
             inherit = yml.getBoolean(path + ".inherit-buy-items", false);
-        } catch (Throwable ignored) {}
+        } catch (Exception e) {
+            BedWars.plugin.getLogger().log(java.util.logging.Level.SEVERE, "Failed to read inherit-buy-items at " + path, e);
+        }
         if (inherit && !buyItemsList.isEmpty()) {
             for (IBuyItem bii : new ArrayList<>(buyItemsList)) {
                 if (bii instanceof BuyItem) {
