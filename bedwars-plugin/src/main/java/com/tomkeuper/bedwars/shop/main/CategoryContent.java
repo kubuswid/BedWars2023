@@ -49,6 +49,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import static com.tomkeuper.bedwars.api.language.Language.getMsg;
 
@@ -259,7 +260,9 @@ public class CategoryContent implements ICategoryContent {
                     ItemStack coloured = BedWars.nms.colourItem(display, arena.getTeam(player));
                     if (coloured != null && coloured.getType() != Material.AIR) display = coloured;
                 }
-            } catch (Throwable ignored) {}
+            } catch (Exception e) {
+                BedWars.plugin.getLogger().log(Level.WARNING, "Failed to colorize fallback item for " + getIdentifier(), e);
+            }
             player.getInventory().addItem(display);
             player.updateInventory();
             return;
