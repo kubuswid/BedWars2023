@@ -30,6 +30,7 @@ import com.tomkeuper.bedwars.stats.PlayerStats;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.*;
 
 public class SQLite implements IDatabase {
@@ -57,7 +58,7 @@ public class SQLite implements IDatabase {
                     BedWars.plugin.getLogger().severe("Could not create /Cache/player_data.db file!");
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
                 return;
             }
         }
@@ -69,7 +70,7 @@ public class SQLite implements IDatabase {
             if (e instanceof ClassNotFoundException) {
                 BedWars.plugin.getLogger().severe("Could not find SQLite Driver on your system!");
             }
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -104,7 +105,7 @@ public class SQLite implements IDatabase {
                 st.executeUpdate(sql);
             }
         }catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -146,7 +147,7 @@ public class SQLite implements IDatabase {
             return true;
         } catch (SQLException e) {
             BedWars.plugin.getLogger().severe("Failed to migrate Quick Buy table: " + e.getMessage());
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
             return false;
         }
     }
@@ -165,7 +166,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return false;
     }
@@ -211,7 +212,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -240,7 +241,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return stats;
     }
@@ -268,7 +269,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -295,7 +296,7 @@ public class SQLite implements IDatabase {
                 }
             }
         }catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -314,7 +315,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return null;
     }
@@ -334,7 +335,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return result;
     }
@@ -353,7 +354,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return false;
     }
@@ -376,7 +377,7 @@ public class SQLite implements IDatabase {
             }
         }
         catch (SQLException ex) {
-            ex.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", ex);
             return 0;
         }
         return 0;
@@ -400,7 +401,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return r;
     }
@@ -437,7 +438,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -462,7 +463,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -481,7 +482,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return iso;
     }
@@ -534,7 +535,7 @@ public class SQLite implements IDatabase {
                 ps.execute();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
     }
 
@@ -552,7 +553,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return list;
     }
@@ -580,7 +581,7 @@ public class SQLite implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "SQLite database error", e);
         }
         return results;
     }

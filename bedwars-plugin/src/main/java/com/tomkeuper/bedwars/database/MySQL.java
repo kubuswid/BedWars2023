@@ -31,6 +31,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -108,7 +109,7 @@ public class MySQL implements IDatabase {
         try {
             dataSource.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
             return false;
         }
         return true;
@@ -125,7 +126,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return false;
     }
@@ -162,7 +163,7 @@ public class MySQL implements IDatabase {
                 statement.executeUpdate(sql);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
     }
 
@@ -212,7 +213,7 @@ public class MySQL implements IDatabase {
             }
         } catch (SQLException e) {
             BedWars.plugin.getLogger().severe("Failed to migrate Quick Buy table: " + e.getMessage());
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
             return false;
         }
     }
@@ -257,7 +258,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
     }
 
@@ -287,7 +288,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return stats;
     }
@@ -313,7 +314,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
     }
 
@@ -330,7 +331,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return null;
     }
@@ -350,7 +351,7 @@ public class MySQL implements IDatabase {
                 }
             }
         }catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
     }
 
@@ -367,7 +368,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", ex);
         }
         return "";
     }
@@ -384,7 +385,7 @@ public class MySQL implements IDatabase {
                 try { list.add(UUID.fromString(s)); } catch (Exception ignored) {}
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return list;
     }
@@ -410,7 +411,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return results;
     }
@@ -426,7 +427,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return false;
     }
@@ -445,7 +446,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", ex);
             return 0;
         }
         return 0;
@@ -469,7 +470,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return new Object[]{1, 0, "", 0};
     }
@@ -514,7 +515,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
     }
 
@@ -543,7 +544,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
     }
 
@@ -560,7 +561,7 @@ public class MySQL implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
         return Language.getDefaultLanguage().getIso();
     }
@@ -611,7 +612,7 @@ public class MySQL implements IDatabase {
                 ps.execute();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "MySQL database error", e);
         }
     }
 
