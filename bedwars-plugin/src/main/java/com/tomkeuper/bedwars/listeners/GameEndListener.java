@@ -20,6 +20,7 @@
 
 package com.tomkeuper.bedwars.listeners;
 
+import com.tomkeuper.bedwars.BedWars;
 import com.tomkeuper.bedwars.api.events.gameplay.GameEndEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -32,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class GameEndListener implements Listener {
 
@@ -48,10 +50,18 @@ public class GameEndListener implements Listener {
 
         // clear Ender Chests for everyone currently in the arena (players and spectators)
         for (Player pl : event.getArena().getPlayers()) {
-            try { pl.getEnderChest().clear(); } catch (Throwable ignored) {}
+            try {
+                pl.getEnderChest().clear();
+            } catch (Exception e) {
+                BedWars.plugin.getLogger().log(Level.SEVERE, "Failed to clear EnderChest for player: " + pl.getName(), e);
+            }
         }
         for (Player pl : event.getArena().getSpectators()) {
-            try { pl.getEnderChest().clear(); } catch (Throwable ignored) {}
+            try {
+                pl.getEnderChest().clear();
+            } catch (Exception e) {
+                BedWars.plugin.getLogger().log(Level.SEVERE, "Failed to clear EnderChest for player: " + pl.getName(), e);
+            }
         }
 
         // clear dropped items
