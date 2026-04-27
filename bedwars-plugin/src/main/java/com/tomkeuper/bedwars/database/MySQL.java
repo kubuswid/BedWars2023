@@ -381,7 +381,11 @@ public class MySQL implements IDatabase {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 String s = rs.getString("uuid");
-                try { list.add(UUID.fromString(s)); } catch (Exception ignored) {}
+                try {
+                    list.add(UUID.fromString(s));
+                } catch (IllegalArgumentException e) {
+                    com.tomkeuper.bedwars.BedWars.plugin.getLogger().warning("Invalid UUID found in quick_buy table: " + s);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

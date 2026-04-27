@@ -547,7 +547,11 @@ public class SQLite implements IDatabase {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         String s = rs.getString("uuid");
-                        try { list.add(java.util.UUID.fromString(s)); } catch (Exception ignored) {}
+                        try {
+                            list.add(java.util.UUID.fromString(s));
+                        } catch (IllegalArgumentException e) {
+                            com.tomkeuper.bedwars.BedWars.plugin.getLogger().warning("Invalid UUID found in quick_buy table: " + s);
+                        }
                     }
                 }
             }
