@@ -186,7 +186,9 @@ public class FireballListener implements Listener {
             Bukkit.getScheduler().runTask(BedWars.plugin, () -> {
                 try {
                     finalPlayer.setVelocity(finalVelocity);
-                } catch (IllegalArgumentException ignored) {}
+                } catch (IllegalArgumentException ignored) {
+                    BedWars.plugin.getLogger().log(java.util.logging.Level.WARNING, "Failed to set velocity for player in Fireball explosion", ignored);
+                }
             });
 
             LastHit lh = LastHit.getLastHit(player);
