@@ -379,8 +379,7 @@ public final class v1_21_R3 extends VersionSupport {
                     }
             );
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Could not register TNT whitelist", e);
         }
     }
 
@@ -396,7 +395,7 @@ public final class v1_21_R3 extends VersionSupport {
 
             return durabilityField.getFloat(nmsBlock);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            getPlugin().getLogger().log(Level.SEVERE, "Could not get blast resistance", e);
         }
 
         return 0; // Default if something fails
