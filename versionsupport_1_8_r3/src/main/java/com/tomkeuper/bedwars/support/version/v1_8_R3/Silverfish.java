@@ -53,7 +53,7 @@ public class Silverfish extends EntitySilverfish {
             cField.set(this.goalSelector, new UnsafeList());
             cField.set(this.targetSelector, new UnsafeList());
         } catch (IllegalAccessException | NoSuchFieldException e1) {
-            e1.printStackTrace();
+            org.bukkit.Bukkit.getLogger().log(java.util.logging.Level.SEVERE, "Failed to initialize Silverfish pathfinder goals", e1);
         }
         this.team = bedWarsTeam;
         this.goalSelector.a(1, new PathfinderGoalFloat(this));
