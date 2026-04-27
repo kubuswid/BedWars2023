@@ -29,6 +29,7 @@ import com.tomkeuper.bedwars.stats.PlayerStats;
 
 import java.io.File;
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.*;
 
 public class H2 implements IDatabase {
@@ -52,7 +53,7 @@ public class H2 implements IDatabase {
             if (e instanceof ClassNotFoundException) {
                 BedWars.plugin.getLogger().severe("Could Not Find H2 Driver on your system!");
             }
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -87,7 +88,7 @@ public class H2 implements IDatabase {
                 st.executeUpdate(sql);
             }
         }catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -130,7 +131,7 @@ public class H2 implements IDatabase {
 //            return true;
         } catch (SQLException e) {
             BedWars.plugin.getLogger().severe("Failed to migrate Quick Buy table: " + e.getMessage());
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
             return false;
         }
     }
@@ -149,7 +150,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return false;
     }
@@ -195,7 +196,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -224,7 +225,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return stats;
     }
@@ -252,7 +253,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -273,7 +274,7 @@ public class H2 implements IDatabase {
                 }
             }
         }catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -292,7 +293,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return null;
     }
@@ -312,7 +313,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return result;
     }
@@ -331,7 +332,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return false;
     }
@@ -353,7 +354,7 @@ public class H2 implements IDatabase {
             }
         }
         catch (SQLException ex) {
-            ex.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", ex);
             return 0;
         }
         return 0;
@@ -377,7 +378,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return r;
     }
@@ -414,7 +415,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -439,7 +440,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -458,7 +459,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return iso;
     }
@@ -511,7 +512,7 @@ public class H2 implements IDatabase {
                 ps.execute();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
     }
 
@@ -529,7 +530,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return list;
     }
@@ -557,7 +558,7 @@ public class H2 implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "H2 database error", e);
         }
         return results;
     }
