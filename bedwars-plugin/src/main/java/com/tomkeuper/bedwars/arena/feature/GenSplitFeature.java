@@ -58,8 +58,8 @@ public class GenSplitFeature implements Listener {
             int splitRange = Arena.getArenaByPlayer(p).getConfig().getInt(ConfigPath.ARENA_GENERATOR_SPLIT_RANGE);
             List<Entity> nearbyEntities = (List) pl.getWorld().getNearbyEntities(pl, splitRange, splitRange, 2.0);
 
-            for (Entity entity : pl.getWorld().getEntities()) {
-                if (nearbyEntities.contains(entity) && entity instanceof Player) {
+            for (Entity entity : nearbyEntities) {
+                if (entity instanceof Player) {
                     Player pickupPlayer = (Player) entity;
                     if (pickupPlayer.getUniqueId() != p.getUniqueId()) {
                         if (Arena.getArenaByPlayer(pickupPlayer) == null) BedWars.debug("pickupPlayer: " + pickupPlayer.getName() + " is not in an arena. Event triggered by: " + p.getName());
