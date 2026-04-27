@@ -51,7 +51,6 @@ public class ShopCacheListener implements Listener {
 
     @EventHandler
     public void onServerLeave(PlayerQuitEvent e) {
-        //if (Main.getServerType() == ServerType.BUNGEE) return;
         //don't remove immediately in case of /rejoin
         ShopCache sc = ShopCache.getInstance().getShopCache(e.getPlayer().getUniqueId());
         if (sc != null) {
