@@ -76,7 +76,6 @@ public class BedWarsTeam implements ITeam {
     @Getter
     private Location spawn, bed, shop, teamUpgrades;
 
-    // private IGenerator ironGenerator = null, goldGenerator = null, emeraldGenerator = null;
     @Getter
     private String name;
 
