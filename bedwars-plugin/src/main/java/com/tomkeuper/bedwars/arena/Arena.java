@@ -632,9 +632,7 @@ public class Arena implements IArena {
             // bungee mode invisibility issues
             if (getServerType() == ServerType.BUNGEE) {
                 // fix invisibility issue
-                //if (BedWars.nms.getVersion() == 7) {
                 BedWars.nms.sendPlayerSpawnPackets(p, this);
-                //}
             }
             for (Player on : Bukkit.getOnlinePlayers()) {
                 if (on == null) continue;
@@ -650,9 +648,7 @@ public class Arena implements IArena {
 
             if (getServerType() == ServerType.BUNGEE) {
                 // fix invisibility issue
-                //if (BedWars.nms.getVersion() == 7) {
                 BedWars.nms.sendPlayerSpawnPackets(p, this);
-                //}
             }
         }, 17L);
 
