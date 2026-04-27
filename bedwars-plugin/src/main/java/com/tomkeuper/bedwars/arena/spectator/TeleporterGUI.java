@@ -69,15 +69,6 @@ public class TeleporterGUI {
         }
 
         List<Player> players = arena.getPlayers();
-        // Filter out spectators to avoid showing heads for players who became spectators
-//        List<Player> nonSpectators = new ArrayList<>();
-//        for (Player pl : players) {
-//            if (!arena.isSpectator(pl)) {
-//                nonSpectators.add(pl);
-//            } else {
-//                BedWars.debug("SHOULD NOT HAPPEN: Removing spectator " + pl.getName() + " from Teleporter GUI for player " + p.getName());
-//            }
-//        }
 
         String[] slotStrings = BedWars.config.getYml().getString(ConfigPath.GENERAL_CONFIGURATION_TELEPORTER_SLOTS).split(",");
         List<Integer> slots = new ArrayList<>();
