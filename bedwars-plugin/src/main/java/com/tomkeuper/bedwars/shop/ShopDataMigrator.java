@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Startup migration for legacy Quick Buy identifiers (unscoped) → scoped default identifiers.
@@ -168,8 +169,7 @@ public final class ShopDataMigrator {
                 BedWars.plugin.getLogger().warning("Quick Buy table migration failed. Check the logs for details.");
             }
         } catch (Throwable t) {
-            BedWars.plugin.getLogger().warning("Error during Quick Buy table migration: " + t.getMessage());
-            t.printStackTrace();
+            BedWars.plugin.getLogger().log(Level.SEVERE, "Error during Quick Buy table migration", t);
         }
     }
 
